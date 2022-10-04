@@ -170,6 +170,7 @@ export const Home = (): JSX.Element => {
 
   const [maticEth, setMaticEth] = useState('0')
   const [maticUsd, setMaticUsd] = useState('0')
+  const [ethUsd, setEthUsd] = useState('0')
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
     // using web3Modal to connect. Can be MetaMask or WalletConnect.
@@ -274,11 +275,13 @@ export const Home = (): JSX.Element => {
   const getPriceInfos = async () => {
     const matic_ethAddr = '0x327e23A4855b6F663a28c5161541d69Af8973302' //MATIC/ETH
     const matic_usdAddr = '0xA1CbF3Fe43BC3501e3Fc4b573e822c70e76A7512' //MATIC/usd
-
+    const eth_usdAddr = '0xF9680D99D6C9589e2a93a78A04A279e509205945'
     const matic_eth = await getPrice(matic_ethAddr)
     const matic_usd = await getPrice(matic_usdAddr)
+    const eth_usd = await getPrice(eth_usdAddr)
     setMaticEth(matic_eth)
     setMaticUsd(matic_usd)
+    setEthUsd(eth_usd)
   }
 
   async function getPrice(addr) {
@@ -324,7 +327,7 @@ export const Home = (): JSX.Element => {
 
       <main>
         <h1 className="title">Price Example</h1>
-        {/* {web3Provider ? (
+        {web3Provider ? (
           <button className="button" type="button" onClick={disconnect}>
             Disconnect
           </button>
@@ -332,10 +335,14 @@ export const Home = (): JSX.Element => {
           <button className="button" type="button" onClick={connect}>
             Connect
           </button>
-        )} */}
+        )}
+        <br />
+        <br />
         <div>MATIC/ETH : {maticEth}</div>
         <br />
         <div>MATIC/USD : {maticUsd}</div>
+        <br />
+        <div>ETH/USD : {ethUsd}</div>
         <br />
         <div>
           EthValue
