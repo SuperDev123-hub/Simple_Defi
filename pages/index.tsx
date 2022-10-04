@@ -1,13 +1,15 @@
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { providers } from 'ethers'
+import { providers, BigNumber, ethers } from 'ethers'
 import Head from 'next/head'
 import { useCallback, useEffect, useReducer, useState } from 'react'
 import WalletLink from 'walletlink'
 import Web3Modal from 'web3modal'
 import { ellipseAddress, getChainData } from '../lib/utilities'
+import { BigNumber as DecimalBigNumber } from 'bignumber.js'
 
 const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
-
+const POLYGON_RPC =
+  'https://polygon-mainnet.g.alchemy.com/v2/kc24K7yiAmCzaH6HOXhnZGjGLlxNV2dO'
 const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
@@ -109,12 +111,65 @@ function reducer(state: StateType, action: ActionType): StateType {
   }
 }
 
+const polygonProvider = new ethers.providers.JsonRpcProvider(POLYGON_RPC)
+const aggregatorV3InterfaceABI = [
+  {
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'description',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint80', name: '_roundId', type: 'uint80' }],
+    name: 'getRoundData',
+    outputs: [
+      { internalType: 'uint80', name: 'roundId', type: 'uint80' },
+      { internalType: 'int256', name: 'answer', type: 'int256' },
+      { internalType: 'uint256', name: 'startedAt', type: 'uint256' },
+      { internalType: 'uint256', name: 'updatedAt', type: 'uint256' },
+      { internalType: 'uint80', name: 'answeredInRound', type: 'uint80' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'latestRoundData',
+    outputs: [
+      { internalType: 'uint80', name: 'roundId', type: 'uint80' },
+      { internalType: 'int256', name: 'answer', type: 'int256' },
+      { internalType: 'uint256', name: 'startedAt', type: 'uint256' },
+      { internalType: 'uint256', name: 'updatedAt', type: 'uint256' },
+      { internalType: 'uint80', name: 'answeredInRound', type: 'uint80' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'version',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
 export const Home = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { provider, web3Provider, address, chainId } = state
-  const [ethValue, setEthValue] = useState(0)
-  const [maticValue, setMaticValue] = useState(0)
+  const [ethValue, setEthValue] = useState('0')
+  const [maticValue, setMaticValue] = useState('0')
 
+  const [maticEth, setMaticEth] = useState('0')
+  const [maticUsd, setMaticUsd] = useState('0')
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
     // using web3Modal to connect. Can be MetaMask or WalletConnect.
@@ -203,7 +258,47 @@ export const Home = (): JSX.Element => {
 
   const onChangeEthValue = (e) => {
     setEthValue(e.target.value)
+    const matic = new DecimalBigNumber(e.target.value).div(maticEth).toString()
+    setMaticValue(matic)
   }
+
+  const onChangeMaticValue = (e) => {
+    setMaticValue(e.target.value)
+    const eth = new DecimalBigNumber(e.target.value)
+      .multipliedBy(maticEth)
+      .toString()
+    setEthValue(eth)
+  }
+
+  // Auto connect to the cached provider
+  const getPriceInfos = async () => {
+    const matic_ethAddr = '0x327e23A4855b6F663a28c5161541d69Af8973302' //MATIC/ETH
+    const matic_usdAddr = '0xA1CbF3Fe43BC3501e3Fc4b573e822c70e76A7512' //MATIC/usd
+
+    const matic_eth = await getPrice(matic_ethAddr)
+    const matic_usd = await getPrice(matic_usdAddr)
+    setMaticEth(matic_eth)
+    setMaticUsd(matic_usd)
+  }
+
+  async function getPrice(addr) {
+    const priceFeed = new ethers.Contract(
+      addr,
+      aggregatorV3InterfaceABI,
+      polygonProvider
+    )
+    const decimal = await priceFeed.decimals()
+    const roundData = await priceFeed.latestRoundData()
+    const answer = BigNumber.from(roundData.answer)
+    const price = new DecimalBigNumber(answer.toString())
+      .div(BigNumber.from(10).pow(decimal).toString())
+      .toString()
+    return price
+  }
+
+  useEffect(() => {
+    getPriceInfos()
+  }, [])
 
   return (
     <div className="container">
@@ -228,8 +323,8 @@ export const Home = (): JSX.Element => {
       </header>
 
       <main>
-        <h1 className="title">Web3Modal Example</h1>
-        {web3Provider ? (
+        <h1 className="title">Price Example</h1>
+        {/* {web3Provider ? (
           <button className="button" type="button" onClick={disconnect}>
             Disconnect
           </button>
@@ -237,23 +332,31 @@ export const Home = (): JSX.Element => {
           <button className="button" type="button" onClick={connect}>
             Connect
           </button>
-        )}
-
+        )} */}
+        <div>MATIC/ETH : {maticEth}</div>
+        <br />
+        <div>MATIC/USD : {maticUsd}</div>
+        <br />
         <div>
           EthValue
           <input
-            type="number"
+            type="text"
             value={ethValue}
             onChange={(e) => onChangeEthValue(e)}
-          ></input>
-          MaticValue<input type="number" value={maticValue}></input>
+          />
+          &nbsp;&nbsp;&nbsp; MaticValue
+          <input
+            type="text"
+            value={maticValue}
+            onChange={(e) => onChangeMaticValue(e)}
+          />
         </div>
       </main>
 
       <style jsx>{`
         main {
           padding: 5rem 0;
-          text-align: center;
+          text-align: left;
         }
 
         p {

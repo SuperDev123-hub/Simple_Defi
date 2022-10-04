@@ -22,8 +22,10 @@
       "yarn format"
     ]
   },
-  "dependencies": {    
+  "dependencies": {
     "@walletconnect/web3-provider": "^1.6.6",
+    "big-number": "^2.0.0",
+    "bignumber.js": "^9.0.1",
     "ethers": "^5.5.1",
     "next": "latest",
     "react": "^17.0.2",
