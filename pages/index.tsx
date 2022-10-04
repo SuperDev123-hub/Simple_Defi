@@ -1,7 +1,7 @@
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import { providers } from 'ethers'
 import Head from 'next/head'
-import { useCallback, useEffect, useReducer } from 'react'
+import { useCallback, useEffect, useReducer, useState } from 'react'
 import WalletLink from 'walletlink'
 import Web3Modal from 'web3modal'
 import { ellipseAddress, getChainData } from '../lib/utilities'
@@ -112,6 +112,8 @@ function reducer(state: StateType, action: ActionType): StateType {
 export const Home = (): JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { provider, web3Provider, address, chainId } = state
+  const [ethValue, setEthValue] = useState(0)
+  const [maticValue, setMaticValue] = useState(0)
 
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
@@ -199,6 +201,10 @@ export const Home = (): JSX.Element => {
 
   const chainData = getChainData(chainId)
 
+  const onChangeEthValue = (e) => {
+    setEthValue(e.target.value)
+  }
+
   return (
     <div className="container">
       <Head>
@@ -232,6 +238,16 @@ export const Home = (): JSX.Element => {
             Connect
           </button>
         )}
+
+        <div>
+          EthValue
+          <input
+            type="number"
+            value={ethValue}
+            onChange={(e) => onChangeEthValue(e)}
+          ></input>
+          MaticValue<input type="number" value={maticValue}></input>
+        </div>
       </main>
 
       <style jsx>{`
