@@ -6,7 +6,19 @@ import WalletLink from 'walletlink'
 import Web3Modal from 'web3modal'
 import { ellipseAddress, getChainData } from '../lib/utilities'
 import { BigNumber as DecimalBigNumber } from 'bignumber.js'
-
+import {
+  ChainId,
+  Token,
+  WETH,
+  Fetcher,
+  Trade,
+  Route,
+  Pair,
+  TokenAmount,
+  TradeType,
+  Percent,
+} from 'quickswap-sdk'
+import { WMatic, TUSD } from './constants.json'
 const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
 const POLYGON_RPC =
   'https://polygon-mainnet.g.alchemy.com/v2/kc24K7yiAmCzaH6HOXhnZGjGLlxNV2dO'
@@ -255,7 +267,7 @@ export const Home = (): JSX.Element => {
     }
   }, [provider, disconnect])
 
-  const chainData = getChainData(chainId)
+  // const chainData = getChainData(chainId)
 
   const onChangeEthValue = (e) => {
     setEthValue(e.target.value)
@@ -271,6 +283,41 @@ export const Home = (): JSX.Element => {
     setEthValue(eth)
   }
 
+  const swap = () => {
+    swapLogic()
+  }
+
+  const swapLogic = async () => {
+    const maticToken = new Token(
+      WMatic.chainId,
+      WMatic.address,
+      WMatic.decimals,
+      WMatic.symbol,
+      WMatic.name
+    )
+
+    const usdToken = new Token(
+      TUSD.chainId,
+      TUSD.address,
+      TUSD.decimals,
+      TUSD.symbol,
+      TUSD.name
+    )
+    const maticUSDPair = await Fetcher.fetchPairData(
+      maticToken,
+      usdToken,
+      web3Provider
+    )
+    const router = new Route([maticUSDPair], maticToken)
+    const trade = new Trade(
+      router,
+      new TokenAmount(maticToken, '10000000000000000'),
+      TradeType.EXACT_INPUT
+    )
+
+    const slippageTolerance = new Percent('50', '10000')
+    const amountOutMin = trade.minimumAmountOut(slippageTolerance)
+  }
   // Auto connect to the cached provider
   const getPriceInfos = async () => {
     const matic_ethAddr = '0x327e23A4855b6F663a28c5161541d69Af8973302' //MATIC/ETH
@@ -315,7 +362,8 @@ export const Home = (): JSX.Element => {
           <div className="grid">
             <div>
               <p className="mb-1">Network:</p>
-              <p>{chainData?.name}</p>
+              {/* <p>{chainData?.name}</p> */}
+              <p>{chainId}</p>
             </div>
             <div>
               <p className="mb-1">Address:</p>
@@ -358,6 +406,10 @@ export const Home = (): JSX.Element => {
             onChange={(e) => onChangeMaticValue(e)}
           />
         </div>
+        <br />
+        <button className="button" type="button" onClick={swap}>
+          Swap
+        </button>
       </main>
 
       <style jsx>{`
