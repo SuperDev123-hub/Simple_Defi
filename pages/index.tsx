@@ -284,6 +284,7 @@ export const Home = (): JSX.Element => {
   }
 
   const swap = () => {
+    // console.log(WMatic.address)
     swapLogic()
   }
 
@@ -308,6 +309,7 @@ export const Home = (): JSX.Element => {
       usdToken,
       web3Provider
     )
+    console.log(maticUSDPair)
     const router = new Route([maticUSDPair], maticToken)
     const trade = new Trade(
       router,
@@ -317,6 +319,8 @@ export const Home = (): JSX.Element => {
 
     const slippageTolerance = new Percent('50', '10000')
     const amountOutMin = trade.minimumAmountOut(slippageTolerance)
+
+    console.log('------------------------------', amountOutMin)
   }
   // Auto connect to the cached provider
   const getPriceInfos = async () => {
