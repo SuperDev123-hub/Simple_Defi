@@ -17,7 +17,7 @@ import {
   TokenAmount,
   TradeType,
   Percent,
-} from 'quickswap-sdk'
+} from '@uniswap/sdk'
 import { WMatic, TUSD } from './constants.json'
 const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
 const POLYGON_RPC =

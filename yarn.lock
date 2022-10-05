@@ -1642,10 +1642,58 @@
   "resolved" "https://registry.npmjs.org/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz"
   "version" "1.1.2"
 
-"@uniswap/v2-core@^1.0.0":
-  "integrity" "sha512-MtybtkUPSyysqLY2U210NBDeCHX+ltHt3oADGdjqoThZaFRDKwM6k1Nb3F0A3hk5hwuQvytFWhrWHOEq6nVJ8Q=="
-  "resolved" "https://registry.npmjs.org/@uniswap/v2-core/-/v2-core-1.0.1.tgz"
+"@uniswap/governance@^1.0.2":
+  "integrity" "sha512-L7BzdI/asAINB2F6EvJuQcg5YhykNeEfZxJrn2RPIVvx+9A9u+opDuqnBK4SYnanrsr3UEX1NwWXwDHmyw2TjQ=="
+  "resolved" "https://registry.npmjs.org/@uniswap/governance/-/governance-1.0.2.tgz"
+  "version" "1.0.2"
+
+"@uniswap/lib@1.1.1":
+  "integrity" "sha512-2yK7sLpKIT91TiS5sewHtOa7YuM8IuBXVl4GZv2jZFys4D2sY7K5vZh6MqD25TPA95Od+0YzCVq6cTF2IKrOmg=="
+  "resolved" "https://registry.npmjs.org/@uniswap/lib/-/lib-1.1.1.tgz"
+  "version" "1.1.1"
+
+"@uniswap/liquidity-staker@^1.0.2":
+  "integrity" "sha512-Rdj+QqapWO3sY1SJdLUQ8dhf26yXg9DC3XU3cpNoh5jrJ0UhAnKqciZss1F6oxBLbNWXzekuigLgSVbVb1BFcw=="
+  "resolved" "https://registry.npmjs.org/@uniswap/liquidity-staker/-/liquidity-staker-1.0.2.tgz"
+  "version" "1.0.2"
+  dependencies:
+    "openzeppelin-solidity-2.3.0" "npm:openzeppelin-solidity@2.3.0"
+
+"@uniswap/merkle-distributor@1.0.1":
+  "integrity" "sha512-5gDiTI5hrXIh5UWTrxKYjw30QQDnpl8ckDSpefldNenDlYO1RKkdUYMYpvrqGi2r7YzLYTlO6+TDlNs6O7hDRw=="
+  "resolved" "https://registry.npmjs.org/@uniswap/merkle-distributor/-/merkle-distributor-1.0.1.tgz"
   "version" "1.0.1"
+
+"@uniswap/sdk@npm:quickswap-sdk@3.0.8":
+  "integrity" "sha512-1pMOS5/RC4K++RCrt3hrhSHDzzVzy40CiLgM8UbvdSVUuYMN5jZZVocbkG+5fRlJA1JqhKhs2OYYLh08t50KOw=="
+  "resolved" "https://registry.npmjs.org/quickswap-sdk/-/quickswap-sdk-3.0.8.tgz"
+  "version" "3.0.8"
+  dependencies:
+    "@uniswap/v2-core" "^1.0.0"
+    "big.js" "^5.2.2"
+    "decimal.js-light" "^2.5.0"
+    "jsbi" "^3.1.1"
+    "tiny-invariant" "^1.1.0"
+    "tiny-warning" "^1.0.3"
+    "toformat" "^2.0.0"
+
+"@uniswap/token-lists@npm:quickswap-token-lists@1.0.1":
+  "integrity" "sha512-QIiF39AXlS1TAlG8cNgPHYzCqUnRUBB9l4bE+wp/qWR2d6W6b4fiEdVHjYlIkbCRSfZqQy6Carh6owud5Ct24g=="
+  "resolved" "https://registry.npmjs.org/quickswap-token-lists/-/quickswap-token-lists-1.0.1.tgz"
+  "version" "1.0.1"
+
+"@uniswap/v2-core@^1.0.0", "@uniswap/v2-core@1.0.0":
+  "integrity" "sha512-BJiXrBGnN8mti7saW49MXwxDBRFiWemGetE58q8zgfnPPzQKq55ADltEILqOt6VFZ22kVeVKbF8gVd8aY3l7pA=="
+  "resolved" "https://registry.npmjs.org/@uniswap/v2-core/-/v2-core-1.0.0.tgz"
+  "version" "1.0.0"
+
+"@uniswap/v2-periphery@^1.1.0-beta.0":
+  "integrity" "sha512-6dkwAMKza8nzqYiXEr2D86dgW3TTavUvCR0w2Tu33bAbM8Ah43LKAzH7oKKPRT5VJQaMi1jtkGs1E8JPor1n5g=="
+  "resolved" "https://registry.npmjs.org/@uniswap/v2-periphery/-/v2-periphery-1.1.0-beta.0.tgz"
+  "version" "1.1.0-beta.0"
+  dependencies:
+    "@uniswap/lib" "1.1.1"
+    "@uniswap/v2-core" "1.0.0"
 
 "@walletconnect/browser-utils@^1.8.0":
   "integrity" "sha512-Wcqqx+wjxIo9fv6eBUFHPsW1y/bGWWRboni5dfD8PtOmrihrEpOCmvRJe4rfl7xgJW8Ea9UqKEaq0bIRLHlK4A=="
@@ -6191,6 +6239,11 @@
   "resolved" "https://registry.npmjs.org/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz"
   "version" "2.0.3"
 
+"openzeppelin-solidity-2.3.0@npm:openzeppelin-solidity@2.3.0":
+  "integrity" "sha512-QYeiPLvB1oSbDt6lDQvvpx7k8ODczvE474hb2kLXZBPKMsxKT1WxTCHBYrCU7kS7hfAku4DcJ0jqOyL+jvjwQw=="
+  "resolved" "https://registry.npmjs.org/openzeppelin-solidity/-/openzeppelin-solidity-2.3.0.tgz"
+  "version" "2.3.0"
+
 "optionator@^0.8.1":
   "integrity" "sha512-+IW9pACdk3XWmmTXG8m3upGUJst5XRGzxMRjXzAuJ1XnIFNvfhjjIuYkDvysnPQ7qzqVzLt78BCruntqRhWQbA=="
   "resolved" "https://registry.npmjs.org/optionator/-/optionator-0.8.3.tgz"
@@ -6579,19 +6632,6 @@
   "integrity" "sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A=="
   "resolved" "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   "version" "1.2.3"
-
-"quickswap-sdk@^3.0.12":
-  "integrity" "sha512-ouCs2PhSnM2FTd0aPfk6GP59s2KMoHLzuEa8JLFUtkH/aiEQCiQcq0vPlGd5P2oL45upPls0ICSKYAl0ko7XXQ=="
-  "resolved" "https://registry.npmjs.org/quickswap-sdk/-/quickswap-sdk-3.0.12.tgz"
-  "version" "3.0.12"
-  dependencies:
-    "@uniswap/v2-core" "^1.0.0"
-    "big.js" "^5.2.2"
-    "decimal.js-light" "^2.5.0"
-    "jsbi" "^3.1.1"
-    "tiny-invariant" "^1.1.0"
-    "tiny-warning" "^1.0.3"
-    "toformat" "^2.0.0"
 
 "randombytes@^2.1.0":
   "integrity" "sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ=="
